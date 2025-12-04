@@ -57,3 +57,22 @@ struct Ability: Codable, Hashable {
         return URL(string: displayIcon)
     }
 }
+
+struct MapResponse: Codable {
+    let status: Int
+    let data: [GameMap]
+}
+
+// El objeto Mapa (Ascent, Bind, etc.)
+struct GameMap: Codable, Identifiable {
+    let uuid: String
+    let displayName: String
+    let splash: String?       // Imagen grande de carga
+    let displayIcon: String?  // Imagen del minimapa vista aérea
+    
+    var id: String { uuid }
+    
+    // Helpers de URL
+    var splashURL: URL? { splash != nil ? URL(string: splash!) : nil }
+    var iconURL: URL? { displayIcon != nil ? URL(string: displayIcon!) : nil }
+}
