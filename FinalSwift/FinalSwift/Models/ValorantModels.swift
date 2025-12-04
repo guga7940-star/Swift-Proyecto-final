@@ -76,3 +76,32 @@ struct GameMap: Codable, Identifiable {
     var splashURL: URL? { splash != nil ? URL(string: splash!) : nil }
     var iconURL: URL? { displayIcon != nil ? URL(string: displayIcon!) : nil }
 }
+
+struct WeaponResponse: Codable {
+    let status: Int
+    let data: [Weapon]
+}
+
+// El objeto Arma
+struct Weapon: Codable, Identifiable {
+    let uuid: String
+    let displayName: String
+    let displayIcon: String?
+    let shopData: ShopData? // Datos de compra (precio, categoría)
+    let weaponStats: WeaponStats? // Estadísticas (daño, cargador)
+    
+    var id: String { uuid }
+    
+    // URL segura de la imagen
+    var iconURL: URL? { displayIcon != nil ? URL(string: displayIcon!) : nil }
+}
+
+struct ShopData: Codable {
+    let cost: Int
+    let categoryText: String
+}
+
+struct WeaponStats: Codable {
+    let fireRate: Double?
+    let magazineSize: Int?
+}

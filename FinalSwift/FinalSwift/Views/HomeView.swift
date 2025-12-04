@@ -21,7 +21,8 @@ struct HomeView: View {
                 }
             MapsListView()
                             .tabItem { Label("Mapas", systemImage: "map.fill") }
-            // Tab 2: Perfil (Usando tu nueva vista separada)
+            WeaponsListView()
+                            .tabItem { Label("Armas", systemImage: "scope") }
             ProfileView(viewModel: userViewModel)
                 .tabItem {
                     Label("Perfil", systemImage: "gear")

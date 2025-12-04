@@ -11,11 +11,12 @@ import Observation
 @Observable
 class ValorantViewModel {
     // Datos que verá la vista
-    var agents: [Agent] = []
     var isLoading = false
     var errorMessage: String? = nil
     var maps: [GameMap] = []
-    
+    var weapons: [Weapon] = []
+    var agents: [Agent] = []
+
     private let service = ValorantService.shared
     
     // Función para llamar a la API
@@ -45,6 +46,18 @@ class ValorantViewModel {
                 isLoading = false
             } catch {
                 self.errorMessage = "Error mapas: \(error.localizedDescription)"
+                self.isLoading = false
+            }
+        }
+    
+    func loadWeapons() async {
+            isLoading = true
+            errorMessage = nil
+            do {
+                self.weapons = try await service.fetchWeapons()
+                isLoading = false
+            } catch {
+                self.errorMessage = "Error armas: \(error.localizedDescription)"
                 self.isLoading = false
             }
         }

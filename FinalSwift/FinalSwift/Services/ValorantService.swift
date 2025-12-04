@@ -48,4 +48,20 @@ class ValorantService {
             let decoded = try JSONDecoder().decode(MapResponse.self, from: data)
             return decoded.data
         }
+    private let weaponsURL = "https://valorant-api.com/v1/weapons?language=es-MX"
+        
+        func fetchWeapons() async throws -> [Weapon] {
+            guard let url = URL(string: weaponsURL) else { throw URLError(.badURL) }
+            
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+                throw URLError(.badServerResponse)
+            }
+            
+            let decoded = try JSONDecoder().decode(WeaponResponse.self, from: data)
+            return decoded.data
+        }
+
 }
+
