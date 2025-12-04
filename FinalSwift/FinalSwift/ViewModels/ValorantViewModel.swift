@@ -14,6 +14,7 @@ class ValorantViewModel {
     var agents: [Agent] = []
     var isLoading = false
     var errorMessage: String? = nil
+    var maps: [GameMap] = []
     
     private let service = ValorantService.shared
     
@@ -35,4 +36,17 @@ class ValorantViewModel {
             self.isLoading = false
         }
     }
+    
+    func loadMaps() async {
+            isLoading = true
+            errorMessage = nil
+            do {
+                self.maps = try await service.fetchMaps()
+                isLoading = false
+            } catch {
+                self.errorMessage = "Error mapas: \(error.localizedDescription)"
+                self.isLoading = false
+            }
+        }
 }
+

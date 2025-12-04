@@ -19,7 +19,8 @@ struct HomeView: View {
                 .tabItem {
                     Label("Agentes", systemImage: "person.3.fill")
                 }
-            
+            MapsListView()
+                            .tabItem { Label("Mapas", systemImage: "map.fill") }
             // Tab 2: Perfil (Usando tu nueva vista separada)
             ProfileView(viewModel: userViewModel)
                 .tabItem {

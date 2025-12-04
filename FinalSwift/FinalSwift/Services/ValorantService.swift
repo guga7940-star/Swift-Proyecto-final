@@ -33,4 +33,19 @@ class ValorantService {
         let decodedResponse = try JSONDecoder().decode(AgentResponse.self, from: data)
         return decodedResponse.data
     }
+    
+    private let mapsURL = "https://valorant-api.com/v1/maps?language=es-MX"
+        
+        func fetchMaps() async throws -> [GameMap] {
+            guard let url = URL(string: mapsURL) else { throw URLError(.badURL) }
+            
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+                throw URLError(.badServerResponse)
+            }
+            
+            let decoded = try JSONDecoder().decode(MapResponse.self, from: data)
+            return decoded.data
+        }
 }
