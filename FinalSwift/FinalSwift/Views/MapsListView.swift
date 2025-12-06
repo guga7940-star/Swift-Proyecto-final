@@ -38,8 +38,45 @@ struct MapsListView: View {
                                 .tint(Color.valRed)
                                 .controlSize(.large)
                                 .frame(maxHeight: .infinity)
-                        } else if let error = viewModel.errorMessage {
-                            Text("Error: \(error)").foregroundStyle(Color.valRed)
+                        }  else if let error = viewModel.errorMessage {
+                            VStack(spacing: 10) {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .font(.largeTitle)
+                                    .foregroundStyle(Color.valRed)
+                                
+                                Text("ERROR DE CONEXIÓN")
+                                    .font(.headline)
+                                    .bold()
+                                    .foregroundStyle(.white)
+                                    
+                                Text(error)
+                                    .font(.caption)
+                                    .foregroundStyle(Color.valRed)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal)
+                                
+                                // 👇 ESTE BOTÓN ES EL QUE PIDE EL REQUISITO
+                                Button(action: {
+                                    Task {
+                                        // En MapsListView usa loadMaps(), en Weapons usa loadWeapons()
+                                        await viewModel.loadMaps()
+                                    }
+                                }) {
+                                    Text("REINTENTAR")
+                                        .font(.headline)
+                                        .bold()
+                                        .padding()
+                                        .background(Color.white.opacity(0.1))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(4)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 4)
+                                                .stroke(Color.valRed, lineWidth: 1)
+                                        )
+                                }
+                                .padding(.top)
+                            }
+                            .frame(maxHeight: .infinity) // Centrar en pantalla
                         } else {
                             ScrollView {
                                 LazyVStack(spacing: 20) {

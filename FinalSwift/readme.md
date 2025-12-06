@@ -75,11 +75,23 @@ Para ejecutar este proyecto localmente, es necesario configurar las claves de AP
     ```
 
 2.  **Configurar API Keys:**
-   
+    Navega a la carpeta `Config` y crea un archivo llamado `APIConfig.swift`. Pega el siguiente código con tus propias claves:
+
+    ```swift
+    import Foundation
+
+    enum APIConfig {
+        // Tu Web API Key de Firebase Console -> Project Settings
+        static let firebaseKey = "TU_API_KEY_AQUI"
+        
+        // URLs Base
+        static let authBaseURL = "[https://identitytoolkit.googleapis.com/v1/accounts](https://identitytoolkit.googleapis.com/v1/accounts)"
+    }
+    ```
     *(Nota: La API de Valorant es pública y no requiere Key).*
 
 3.  **Ejecutar:**
-    Abre `FinalSwift.xcodeproj` en Xcode 15+ y ejecuta en un simulador (iPhone 17 Pro recomendado).
+    Abre `FinalSwift.xcodeproj` en Xcode 15+ y ejecuta en un simulador (iPhone 15 Pro recomendado).
 
 ---
 

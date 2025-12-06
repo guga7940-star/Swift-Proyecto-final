@@ -10,10 +10,8 @@ import SwiftUI
 struct WeaponsListView: View {
     @State private var viewModel = ValorantViewModel()
     
-    // 1. ESTADO DEL BUSCADOR
     @State private var searchText = ""
     
-    // 2. LÓGICA DE FILTRADO
     var filteredWeapons: [Weapon] {
         if searchText.isEmpty {
             return viewModel.weapons
@@ -41,9 +39,45 @@ struct WeaponsListView: View {
                                 .controlSize(.large)
                                 .frame(maxHeight: .infinity)
                         } else if let error = viewModel.errorMessage {
-                            Text("Error: \(error)").foregroundStyle(Color.valRed)
+                            VStack(spacing: 10) {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .font(.largeTitle)
+                                    .foregroundStyle(Color.valRed)
+                                
+                                Text("ERROR DE CONEXIÓN")
+                                    .font(.headline)
+                                    .bold()
+                                    .foregroundStyle(.white)
+                                    
+                                Text(error)
+                                    .font(.caption)
+                                    .foregroundStyle(Color.valRed)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal)
+                                
+                                // 👇 ESTE BOTÓN ES EL QUE PIDE EL REQUISITO
+                                Button(action: {
+                                    Task {
+                                        // En MapsListView usa loadMaps(), en Weapons usa loadWeapons()
+                                        await viewModel.loadMaps()
+                                    }
+                                }) {
+                                    Text("REINTENTAR")
+                                        .font(.headline)
+                                        .bold()
+                                        .padding()
+                                        .background(Color.white.opacity(0.1))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(4)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 4)
+                                                .stroke(Color.valRed, lineWidth: 1)
+                                        )
+                                }
+                                .padding(.top)
+                            }
+                            .frame(maxHeight: .infinity) // Centrar en pantalla
                         } else {
-                            // 4. USAMOS LA LISTA FILTRADA
                             List(filteredWeapons) { weapon in
                                 ZStack {
                                     NavigationLink(destination: WeaponDetailView(weapon: weapon)) {
@@ -72,7 +106,7 @@ struct WeaponsListView: View {
     }
 }
 
-// El componente WeaponRow se queda igual (puedes dejarlo aquí abajo o moverlo a Components)
+
 struct WeaponRow: View {
     let weapon: Weapon
     
