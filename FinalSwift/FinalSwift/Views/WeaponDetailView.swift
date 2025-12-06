@@ -15,7 +15,6 @@ struct WeaponDetailView: View {
         ScrollView {
             VStack(spacing: 30) {
                 
-                // 1. ENCABEZADO Y PRECIO
                 VStack(spacing: 5) {
                     Text(weapon.displayName.uppercased())
                         .font(.system(size: 40, weight: .heavy))
@@ -38,9 +37,7 @@ struct WeaponDetailView: View {
                 }
                 .padding(.top, 40)
                 
-                // 2. IMAGEN DEL ARMA
                 ZStack {
-                    // Fondo decorativo (círculo sutil)
                     Circle()
                         .fill(Color.valRed.opacity(0.1))
                         .frame(width: 300, height: 300)
@@ -49,7 +46,7 @@ struct WeaponDetailView: View {
                     AsyncImage(url: weapon.iconURL) { img in
                         img.resizable()
                             .aspectRatio(contentMode: .fit)
-                            .rotationEffect(.degrees(15)) // Un pequeño giro para estilo
+                            .rotationEffect(.degrees(15))
                     } placeholder: {
                         ProgressView().tint(Color.valRed)
                     }
@@ -57,7 +54,6 @@ struct WeaponDetailView: View {
                     .shadow(color: .black.opacity(0.5), radius: 20, x: 0, y: 10)
                 }
                 
-                // 3. ESTADÍSTICAS (GRID)
                 VStack(alignment: .leading, spacing: 15) {
                     HStack {
                         Image(systemName: "chart.bar.fill").foregroundStyle(Color.valRed)
@@ -68,16 +64,12 @@ struct WeaponDetailView: View {
                     }
                     
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 15) {
-                        // Cadencia de Fuego
                         StatBox(title: "CADENCIA", value: String(format: "%.1f /s", weapon.weaponStats?.fireRate ?? 0))
                         
-                        // Cargador
                         StatBox(title: "CARGADOR", value: "\(weapon.weaponStats?.magazineSize ?? 0)")
                         
-                        // Penetración (Si tuviéramos el dato, por ahora placeholder)
                         StatBox(title: "PENETRACIÓN", value: "MEDIA")
                         
-                        // Rango (Placeholder)
                         StatBox(title: "RANGO EFECTIVO", value: "50M")
                     }
                 }
@@ -89,7 +81,6 @@ struct WeaponDetailView: View {
     }
 }
 
-// Sub-componente para las cajitas de estadísticas
 struct StatBox: View {
     let title: String
     let value: String

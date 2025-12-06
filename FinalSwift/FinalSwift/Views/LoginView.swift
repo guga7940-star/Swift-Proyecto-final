@@ -7,9 +7,9 @@ struct LoginView: View {
     @State private var password = ""
     @State private var isRegistering = false
     
-    let valRed = Color(red: 1.0, green: 0.275, blue: 0.333) // #FF4655
-    let valDark = Color(red: 0.06, green: 0.1, blue: 0.14) // #0F1923
-    let valText = Color(red: 0.925, green: 0.91, blue: 0.882) // #ECE8E1
+    let valRed = Color(red: 1.0, green: 0.275, blue: 0.333)
+    let valDark = Color(red: 0.06, green: 0.1, blue: 0.14)
+    let valText = Color(red: 0.925, green: 0.91, blue: 0.882)
     
     var body: some View {
         NavigationStack {
@@ -52,7 +52,7 @@ struct LoginView: View {
                         HStack {
                             Image(systemName: "person.fill")
                                 .foregroundStyle(valRed)
-                            TextField("", text: $email, prompt: Text("ID DE RIOT / CORREO").foregroundColor(.gray))
+                            TextField("", text: $email, prompt: Text("CORREO").foregroundColor(.gray))
                                 .foregroundStyle(.white)
                                 .textInputAutocapitalization(.never)
                                 .keyboardType(.emailAddress)
@@ -67,7 +67,7 @@ struct LoginView: View {
                         HStack {
                             Image(systemName: "lock.fill")
                                 .foregroundStyle(valRed)
-                            SecureField("", text: $password, prompt: Text("CLAVE DE ACCESO").foregroundColor(.gray))
+                            SecureField("", text: $password, prompt: Text("CONTRASEÑA").foregroundColor(.gray))
                                 .foregroundStyle(.white)
                         }
                         .padding()

@@ -10,10 +10,8 @@ import SwiftUI
 struct HomeView: View {
     var userViewModel: UserViewModel
     
-    // Configuramos el aspecto de la TabBar al iniciar
     init(userViewModel: UserViewModel) {
         self.userViewModel = userViewModel
-        // Hacer la barra de tabs oscura
         UITabBar.appearance().backgroundColor = UIColor(Color.valDark)
         UITabBar.appearance().unselectedItemTintColor = UIColor.gray
     }
@@ -32,8 +30,8 @@ struct HomeView: View {
             ProfileView(viewModel: userViewModel)
                 .tabItem { Label("PERFIL", systemImage: "gear") }
         }
-        .tint(.valRed) // El icono seleccionado se pone rojo
-        .preferredColorScheme(.dark) // Fuerza modo oscuro en toda la app
+        .tint(.valRed)
+        .preferredColorScheme(.dark)
     }
 }
 

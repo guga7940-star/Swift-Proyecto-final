@@ -34,7 +34,6 @@ struct ProfileView: View {
                 
                 Spacer()
                 
-                // Usamos el componente reutilizable #3
                 CustomButton(title: "Cerrar Sesión", color: .red) {
                     viewModel.logout()
                 }

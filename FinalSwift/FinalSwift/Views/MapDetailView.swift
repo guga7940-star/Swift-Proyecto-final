@@ -13,7 +13,6 @@ struct MapDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                // 1. IMAGEN DE ARTE (SPLASH)
                 ZStack(alignment: .bottomLeading) {
                     AsyncImage(url: map.splashURL) { img in
                         img.resizable().aspectRatio(contentMode: .fill)
@@ -24,7 +23,6 @@ struct MapDetailView: View {
                     .clipped()
                     .overlay(Color.black.opacity(0.3))
                     
-                    // Nombre y Coordenadas sobre la imagen
                     VStack(alignment: .leading) {
                         Text(map.displayName.uppercased())
                             .font(.system(size: 50, weight: .heavy))
@@ -40,7 +38,6 @@ struct MapDetailView: View {
                     .padding()
                 }
                 
-                // 2. VISTA TÁCTICA (MINIMAPA)
                 VStack(alignment: .leading, spacing: 20) {
                     HStack {
                         Image(systemName: "map.fill").foregroundStyle(Color.valRed) // CORRECCIÓN
@@ -51,7 +48,6 @@ struct MapDetailView: View {
                     }
                     .padding(.top)
                     
-                    // El plano del mapa
                     ZStack {
                         Color.valDark.opacity(0.5).cornerRadius(12) // CORRECCIÓN
                         
@@ -77,7 +73,7 @@ struct MapDetailView: View {
                 .padding()
             }
         }
-        .background(Color.valDark) // CORRECCIÓN
+        .background(Color.valDark) 
         .navigationBarTitleDisplayMode(.inline)
     }
 }

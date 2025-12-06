@@ -19,10 +19,8 @@ struct AgentsListView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.valDark.ignoresSafeArea() // Fondo Valorant
-                
+                Color.valDark.ignoresSafeArea()
                 VStack(spacing: 0) {
-                    // SearchBar Estilizada
                     HStack {
                         Image(systemName: "magnifyingglass").foregroundStyle(.gray)
                         TextField("", text: $searchText, prompt: Text("BUSCAR AGENTE...").foregroundColor(.gray))
@@ -34,13 +32,10 @@ struct AgentsListView: View {
                     .padding()
                     
                     if viewModel.isLoading {
-                        // CORRECCIÓN AQUÍ: Color.valRed
                         ProgressView().tint(Color.valRed).frame(maxHeight: .infinity)
                     } else if let error = viewModel.errorMessage {
-                        // CORRECCIÓN AQUÍ: Color.valRed
                         Text(error).foregroundStyle(Color.valRed)
                     } else {
-                        // Lista Transparente
                         List(filteredAgents) { agent in
                             ZStack {
                                 NavigationLink(destination: AgentDetailView(agent: agent)) {

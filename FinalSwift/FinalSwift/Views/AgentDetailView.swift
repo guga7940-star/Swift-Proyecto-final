@@ -14,12 +14,10 @@ struct AgentDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                // 1. Foto Grande (Portrait)
                 AsyncImage(url: agent.portraitURL) { image in
                     image.resizable()
                          .aspectRatio(contentMode: .fit)
                 } placeholder: {
-                    // Si no carga la foto grande, mostramos el icono
                     AsyncImage(url: agent.iconURL) { icon in
                         icon.resizable().aspectRatio(contentMode: .fit)
                     } placeholder: {
@@ -28,12 +26,10 @@ struct AgentDetailView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .background(
-                    // Un fondo degradado bonito usando los colores de Valorant
                     LinearGradient(colors: [.red.opacity(0.3), .black], startPoint: .top, endPoint: .bottom)
                 )
                 
                 VStack(alignment: .leading, spacing: 15) {
-                    // 2. Título y Rol
                     HStack {
                         Text(agent.displayName)
                             .font(.system(size: 40, weight: .heavy))
@@ -51,7 +47,6 @@ struct AgentDetailView: View {
                     
                     Divider()
                     
-                    // 3. Descripción
                     Text("BIOGRAFÍA")
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -62,7 +57,6 @@ struct AgentDetailView: View {
                     
                     Divider()
                     
-                    // 4. Habilidades (Si las tiene)
                     if let abilities = agent.abilities {
                         Text("HABILIDADES")
                             .font(.caption)
@@ -71,7 +65,6 @@ struct AgentDetailView: View {
                         
                         ForEach(abilities, id: \.self) { ability in
                             HStack(alignment: .top) {
-                                // Icono de habilidad
                                 AsyncImage(url: ability.iconURL) { icon in
                                     icon.resizable().aspectRatio(contentMode: .fit)
                                 } placeholder: {

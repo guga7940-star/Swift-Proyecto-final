@@ -13,7 +13,6 @@ struct MapsListView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // 1. FONDO OSCURO GLOBAL
                 Color.valDark.ignoresSafeArea()
                 
                 Group {
@@ -43,21 +42,18 @@ struct MapsListView: View {
                                             .frame(height: 160)
                                             .clipped()
                                             .overlay(
-                                                // Degradado para leer mejor el texto
                                                 LinearGradient(colors: [.clear, .valDark.opacity(0.8)], startPoint: .top, endPoint: .bottom)
                                             )
                                             
-                                            // Información de abajo
                                             HStack {
                                                 Text(map.displayName.uppercased())
                                                     .font(.title2)
                                                     .bold()
-                                                    .foregroundStyle(.white) // Texto blanco
+                                                    .foregroundStyle(.white)
                                                     .tracking(1)
                                                 
                                                 Spacer()
                                                 
-                                                // Icono del mapa
                                                 AsyncImage(url: map.listIconURL) { icon in
                                                     icon.resizable().aspectRatio(contentMode: .fit)
                                                 } placeholder: {
@@ -66,9 +62,9 @@ struct MapsListView: View {
                                                 .frame(width: 30, height: 30)
                                             }
                                             .padding()
-                                            .background(Color.white.opacity(0.05)) // Fondo semitransparente
+                                            .background(Color.white.opacity(0.05))
                                         }
-                                        .cornerRadius(4) // Bordes rectos estilo Valorant
+                                        .cornerRadius(4) 
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 4)
                                                 .stroke(Color.white.opacity(0.1), lineWidth: 1)
