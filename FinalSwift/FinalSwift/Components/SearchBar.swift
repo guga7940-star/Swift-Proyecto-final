@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchBar: View {
-    // RT-1: @Binding nos permite modificar una variable que vive en la vista padre
+ 
     @Binding var text: String
 
     var body: some View {
@@ -19,7 +19,6 @@ struct SearchBar: View {
             TextField("Buscar agente...", text: $text)
                 .textFieldStyle(.plain)
             
-            // Botón para borrar texto
             if !text.isEmpty {
                 Button(action: {
                     text = ""
@@ -37,6 +36,5 @@ struct SearchBar: View {
 }
 
 #Preview {
-    // Ejemplo de cómo se usa con una variable constante
     SearchBar(text: .constant(""))
 }

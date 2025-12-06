@@ -10,36 +10,54 @@ import SwiftUI
 struct WeaponsListView: View {
     @State private var viewModel = ValorantViewModel()
     
+    // 1. ESTADO DEL BUSCADOR
+    @State private var searchText = ""
+    
+    // 2. LÓGICA DE FILTRADO
+    var filteredWeapons: [Weapon] {
+        if searchText.isEmpty {
+            return viewModel.weapons
+        } else {
+            return viewModel.weapons.filter { weapon in
+                weapon.displayName.lowercased().contains(searchText.lowercased())
+            }
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
-                // 1. FONDO OSCURO
                 Color.valDark.ignoresSafeArea()
                 
-                Group {
-                    if viewModel.isLoading {
-                        ProgressView()
-                            .tint(Color.valRed)
-                            .controlSize(.large)
-                    } else if let error = viewModel.errorMessage {
-                        Text("Error: \(error)").foregroundStyle(Color.valRed)
-                    } else {
-                        // 2. LISTA ESTILIZADA
-                        List(viewModel.weapons) { weapon in
-                            ZStack {
-                                // Enlace de Navegación Invisible
-                                NavigationLink(destination: WeaponDetailView(weapon: weapon)) {
-                                    EmptyView()
-                                }.opacity(0)
-                                
-                                // Diseño de la Fila
-                                WeaponRow(weapon: weapon)
+                VStack(spacing: 0) {
+                    // 3. BARRA DE BÚSQUEDA
+                    SearchBar(text: $searchText)
+                        .padding(.top)
+                    
+                    Group {
+                        if viewModel.isLoading {
+                            ProgressView()
+                                .tint(Color.valRed)
+                                .controlSize(.large)
+                                .frame(maxHeight: .infinity)
+                        } else if let error = viewModel.errorMessage {
+                            Text("Error: \(error)").foregroundStyle(Color.valRed)
+                        } else {
+                            // 4. USAMOS LA LISTA FILTRADA
+                            List(filteredWeapons) { weapon in
+                                ZStack {
+                                    NavigationLink(destination: WeaponDetailView(weapon: weapon)) {
+                                        EmptyView()
+                                    }.opacity(0)
+                                    
+                                    WeaponRow(weapon: weapon)
+                                }
+                                .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
                             }
-                            .listRowBackground(Color.clear)
-                            .listRowSeparator(.hidden)
+                            .listStyle(.plain)
+                            .scrollContentBackground(.hidden)
                         }
-                        .listStyle(.plain)
-                        .scrollContentBackground(.hidden)
                     }
                 }
             }
@@ -54,13 +72,12 @@ struct WeaponsListView: View {
     }
 }
 
-// 3. COMPONENTE DE FILA (LOCAL PARA MANTENER ORDEN)
+// El componente WeaponRow se queda igual (puedes dejarlo aquí abajo o moverlo a Components)
 struct WeaponRow: View {
     let weapon: Weapon
     
     var body: some View {
         HStack(spacing: 15) {
-            // Imagen del arma
             AsyncImage(url: weapon.iconURL) { image in
                 image.resizable()
                      .aspectRatio(contentMode: .fit)
@@ -89,9 +106,7 @@ struct WeaponRow: View {
                         .foregroundStyle(.orange)
                 }
             }
-            
             Spacer()
-            
             Image(systemName: "chevron.right")
                 .foregroundStyle(.gray.opacity(0.5))
         }

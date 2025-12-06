@@ -17,7 +17,7 @@ struct MapDetailView: View {
                     AsyncImage(url: map.splashURL) { img in
                         img.resizable().aspectRatio(contentMode: .fill)
                     } placeholder: {
-                        Color.valDark // CORRECCIÓN: Color.valDark
+                        Color.valDark
                     }
                     .frame(height: 250)
                     .clipped()
@@ -31,7 +31,7 @@ struct MapDetailView: View {
                         if let coords = map.coordinates {
                             Text(coords)
                                 .font(.callout)
-                                .foregroundStyle(Color.valRed) // CORRECCIÓN: Color.valRed
+                                .foregroundStyle(Color.valRed)
                                 .bold()
                         }
                     }
@@ -40,7 +40,7 @@ struct MapDetailView: View {
                 
                 VStack(alignment: .leading, spacing: 20) {
                     HStack {
-                        Image(systemName: "map.fill").foregroundStyle(Color.valRed) // CORRECCIÓN
+                        Image(systemName: "map.fill").foregroundStyle(Color.valRed)
                         Text("VISTA TÁCTICA //")
                             .font(.headline).bold()
                             .foregroundStyle(.white)
@@ -49,20 +49,20 @@ struct MapDetailView: View {
                     .padding(.top)
                     
                     ZStack {
-                        Color.valDark.opacity(0.5).cornerRadius(12) // CORRECCIÓN
+                        Color.valDark.opacity(0.5).cornerRadius(12)
                         
                         AsyncImage(url: map.tacticalMapURL) { img in
                             img.resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .padding()
                         } placeholder: {
-                            ProgressView().tint(Color.valRed) // CORRECCIÓN
+                            ProgressView().tint(Color.valRed)
                         }
                     }
                     .frame(height: 350)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.valRed.opacity(0.5), lineWidth: 1) // CORRECCIÓN
+                            .stroke(Color.valRed.opacity(0.5), lineWidth: 1)
                     )
                     
                     Text("PLANIFICACIÓN DE MISIÓN")
