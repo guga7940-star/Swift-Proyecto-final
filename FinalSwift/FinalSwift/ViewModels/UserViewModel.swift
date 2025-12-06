@@ -17,11 +17,11 @@ class UserViewModel {
     
     private let authService = AuthService.shared
     
-    func login(email: String, password: String) async { // Cambia pass a password
+    func login(email: String, password: String) async {
         await performAuthAction(email: email, pass: password, action: .signIn)
     }
 
-    func register(email: String, password: String) async { // Cambia pass a password
+    func register(email: String, password: String) async { 
         await performAuthAction(email: email, pass: password, action: .signUp)
     }
     

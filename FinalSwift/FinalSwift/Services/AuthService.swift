@@ -45,7 +45,6 @@ class AuthService {
             throw URLError(.badServerResponse)
         }
         
-        // Manejo de errores (RT-7)
         if !(200...299).contains(httpResponse.statusCode) {
             if let errorResponse = try? JSONDecoder().decode(AuthErrorResponse.self, from: data) {
                 throw NSError(domain: "Auth", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorResponse.error.message])

@@ -8,8 +8,7 @@
 import Foundation
 
 enum APIConfig {
-    static let firebaseKey = "TU_API_KEY_REAL_AQUI"
-    
-    // URL base de autenticación de Firebase (No cambiar)
+    static let firebaseKey = "AIzaSyAyYorjfcv3zULn8lEragrs-ml7k1IecYE"
+
     static let authBaseURL = "https://identitytoolkit.googleapis.com/v1/accounts"
 }

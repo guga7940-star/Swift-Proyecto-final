@@ -7,102 +7,132 @@ struct LoginView: View {
     @State private var password = ""
     @State private var isRegistering = false
     
+    let valRed = Color(red: 1.0, green: 0.275, blue: 0.333) // #FF4655
+    let valDark = Color(red: 0.06, green: 0.1, blue: 0.14) // #0F1923
+    let valText = Color(red: 0.925, green: 0.91, blue: 0.882) // #ECE8E1
+    
     var body: some View {
         NavigationStack {
-            VStack(spacing: 25) {
-                // Título
-                VStack(spacing: 10) {
-                    Image(systemName: "lock.circle.fill")
-                        .resizable()
-                        .frame(width: 80, height: 80)
-                        .foregroundStyle(.blue)
-                    
-                    Text(isRegistering ? "Crear Cuenta" : "Iniciar Sesión")
-                        .font(.largeTitle)
-                        .bold()
-                }
-                .padding(.top, 40)
+            ZStack {
+                valDark.ignoresSafeArea()
                 
-                // Campos
-                VStack(spacing: 15) {
-                    TextField("Correo electrónico", text: $email)
-                        .textFieldStyle(.roundedBorder)
-                        .textInputAutocapitalization(.never)
-                        .keyboardType(.emailAddress)
-                    
-                    SecureField("Contraseña", text: $password)
-                        .textFieldStyle(.roundedBorder)
-                }
-                .padding(.horizontal)
-                
-                // Mensaje de Error
-                if let errorMessage = viewModel.errorMessage {
-                    Text(errorMessage)
-                        .foregroundStyle(.red)
-                        .font(.caption)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
+                VStack {
+                    Divider().background(Color.white.opacity(0.1))
+                    Spacer()
+                    Divider().background(Color.white.opacity(0.1))
                 }
                 
-                // Botón o Spinner
-                if viewModel.isLoading {
-                    ProgressView()
-                } else {
-                    Button(action: {
-                        Task {
-                            if isRegistering {
-                                await viewModel.register(email: email, password: password)
+                VStack(spacing: 30) {
+                    VStack(spacing: 15) {
+                        AsyncImage(url: URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Valorant_logo_-_pink_color_version.svg/100px-Valorant_logo_-_pink_color_version.svg.png")) { phase in
+                            if let image = phase.image {
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 80, height: 80)
+                                    // Efecto de sombra roja brillante
+                                    .shadow(color: valRed.opacity(0.8), radius: 10, x: 0, y: 0)
                             } else {
-                                await viewModel.login(email: email, password: password)
+                                Image(systemName: "shield.fill")
+                                    .resizable()
+                                    .frame(width: 60, height: 70)
+                                    .foregroundStyle(valRed)
                             }
                         }
-                    }) {
-                        Text(isRegistering ? "Registrarme" : "Entrar")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
+                        
+                        Text(isRegistering ? "NUEVO AGENTE" : "INICIAR MISIÓN")
+                            .font(.system(size: 30, weight: .heavy, design: .default))
+                            .textCase(.uppercase)
+                            .foregroundStyle(.white)
+                            .tracking(2)
+                    }
+                    .padding(.top, 40)
+                    
+                    VStack(spacing: 20) {
+                        HStack {
+                            Image(systemName: "person.fill")
+                                .foregroundStyle(valRed)
+                            TextField("", text: $email, prompt: Text("ID DE RIOT / CORREO").foregroundColor(.gray))
+                                .foregroundStyle(.white)
+                                .textInputAutocapitalization(.never)
+                                .keyboardType(.emailAddress)
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.05))
+                        .overlay(
+                            Rectangle()
+                                .stroke(email.isEmpty ? Color.gray.opacity(0.3) : valRed, lineWidth: 1)
+                        )
+                        
+                        HStack {
+                            Image(systemName: "lock.fill")
+                                .foregroundStyle(valRed)
+                            SecureField("", text: $password, prompt: Text("CLAVE DE ACCESO").foregroundColor(.gray))
+                                .foregroundStyle(.white)
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.05))
+                        .overlay(
+                            Rectangle()
+                                .stroke(password.isEmpty ? Color.gray.opacity(0.3) : valRed, lineWidth: 1)
+                        )
                     }
                     .padding(.horizontal)
-                    .disabled(email.isEmpty || password.isEmpty)
-                }
-                
-                Spacer()
-                Button(action: {
-                    // ⚠️ MODO DE PRUEBA: Entrar directo sin contraseña
-                    viewModel.bypassLogin()
                     
-                    /* CÓDIGO REAL (COMENTADO POR AHORA)
-                    Task {
-                        if isRegistering {
-                            await viewModel.register(email: email, password: password)
-                        } else {
-                            await viewModel.login(email: email, password: password)
+                    if let errorMessage = viewModel.errorMessage {
+                        HStack {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                            Text(errorMessage)
                         }
+                        .foregroundStyle(valRed)
+                        .font(.caption.bold())
+                        .padding(.horizontal)
                     }
-                    */
-                }) {
-                    Text(isRegistering ? "Registrarme" : "Entrar")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
-                // Cambiar modo
-                Button(action: {
-                    withAnimation {
-                        isRegistering.toggle()
-                        viewModel.errorMessage = nil
+                    
+                    Spacer()
+                    
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .tint(valRed)
+                            .scaleEffect(1.5)
+                    } else {
+                        Button(action: {
+                            Task {
+                                if isRegistering {
+                                    await viewModel.register(email: email, password: password)
+                                } else {
+                                    await viewModel.login(email: email, password: password)
+                                }
+                            }
+                        }) {
+                            Text(isRegistering ? "REGISTRARSE" : "ENTRAR")
+                                .font(.headline.bold())
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(valRed)
+                                .foregroundColor(.white)
+                                .cornerRadius(4) // Bordes casi rectos
+                                .shadow(color: valRed.opacity(0.4), radius: 5, x: 0, y: 5)
+                        }
+                        .padding(.horizontal)
+                        .disabled(email.isEmpty || password.isEmpty)
+                        .opacity(email.isEmpty || password.isEmpty ? 0.6 : 1.0)
                     }
-                }) {
-                    Text(isRegistering ? "¿Ya tienes cuenta? Inicia sesión" : "¿No tienes cuenta? Regístrate")
-                        .font(.subheadline)
+                    
+                    Button(action: {
+                        withAnimation {
+                            isRegistering.toggle()
+                            viewModel.errorMessage = nil
+                        }
+                    }) {
+                        Text(isRegistering ? "¿YA TIENES CUENTA? // ACCEDER" : "¿NO TIENES CUENTA? // RECLUTAR")
+                            .font(.caption.bold())
+                            .foregroundStyle(.white.opacity(0.7))
+                            .padding(.bottom, 30)
+                    }
                 }
-                .padding(.bottom, 20)
+                .padding()
             }
-            .padding()
         }
     }
 }

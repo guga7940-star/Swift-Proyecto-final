@@ -87,12 +87,11 @@ struct Weapon: Codable, Identifiable {
     let uuid: String
     let displayName: String
     let displayIcon: String?
-    let shopData: ShopData? // Datos de compra (precio, categoría)
-    let weaponStats: WeaponStats? // Estadísticas (daño, cargador)
+    let shopData: ShopData?
+    let weaponStats: WeaponStats?
     
     var id: String { uuid }
     
-    // URL segura de la imagen
     var iconURL: URL? { displayIcon != nil ? URL(string: displayIcon!) : nil }
 }
 
