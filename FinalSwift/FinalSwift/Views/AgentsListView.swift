@@ -9,52 +9,57 @@ import SwiftUI
 
 struct AgentsListView: View {
     @State private var viewModel = ValorantViewModel()
-    
-    // 1. Variable para el texto de búsqueda
     @State private var searchText = ""
     
-    // 2. Variable computada para filtrar los agentes
     var filteredAgents: [Agent] {
-        if searchText.isEmpty {
-            return viewModel.agents
-        } else {
-            return viewModel.agents.filter { agent in
-                agent.displayName.lowercased().contains(searchText.lowercased())
-            }
-        }
+        if searchText.isEmpty { return viewModel.agents }
+        else { return viewModel.agents.filter { $0.displayName.lowercased().contains(searchText.lowercased()) } }
     }
     
     var body: some View {
         NavigationStack {
-            VStack { // Usamos VStack para apilar buscador y lista
+            ZStack {
+                Color.valDark.ignoresSafeArea() // Fondo Valorant
                 
-                // 3. Aquí usamos tu componente reutilizable (RT-1 y RT-5)
-                SearchBar(text: $searchText)
-                    .padding(.top)
-                
-                Group {
+                VStack(spacing: 0) {
+                    // SearchBar Estilizada
+                    HStack {
+                        Image(systemName: "magnifyingglass").foregroundStyle(.gray)
+                        TextField("", text: $searchText, prompt: Text("BUSCAR AGENTE...").foregroundColor(.gray))
+                            .foregroundStyle(.white)
+                    }
+                    .padding()
+                    .background(Color.white.opacity(0.05))
+                    .overlay(Rectangle().stroke(Color.valRed, lineWidth: 1)) // Aquí usamos Color.valRed
+                    .padding()
+                    
                     if viewModel.isLoading {
-                        ProgressView("Cargando...")
-                            .frame(maxHeight: .infinity)
+                        // CORRECCIÓN AQUÍ: Color.valRed
+                        ProgressView().tint(Color.valRed).frame(maxHeight: .infinity)
                     } else if let error = viewModel.errorMessage {
-                        Text(error).foregroundStyle(.red)
+                        // CORRECCIÓN AQUÍ: Color.valRed
+                        Text(error).foregroundStyle(Color.valRed)
                     } else {
-                        // 4. Usamos la lista filtrada
+                        // Lista Transparente
                         List(filteredAgents) { agent in
-                            NavigationLink(destination: AgentDetailView(agent: agent)) {
-                                AgentRow(agent: agent) // ¡Mucho más limpio!
+                            ZStack {
+                                NavigationLink(destination: AgentDetailView(agent: agent)) {
+                                    EmptyView()
+                                }.opacity(0)
+                                
+                                AgentRow(agent: agent)
                             }
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
                         }
                         .listStyle(.plain)
+                        .scrollContentBackground(.hidden)
                     }
-                } 
-            }
-            .navigationTitle("Agentes Valorant")
-            .task {
-                if viewModel.agents.isEmpty {
-                    await viewModel.loadAgents()
                 }
             }
+            .navigationTitle("AGENTES")
+            .navigationBarTitleDisplayMode(.inline)
+            .task { if viewModel.agents.isEmpty { await viewModel.loadAgents() } }
         }
     }
 }

@@ -8,26 +8,32 @@
 import SwiftUI
 
 struct HomeView: View {
-    // Recibimos el UserViewModel para poder cerrar sesión desde aquí
     var userViewModel: UserViewModel
     
+    // Configuramos el aspecto de la TabBar al iniciar
+    init(userViewModel: UserViewModel) {
+        self.userViewModel = userViewModel
+        // Hacer la barra de tabs oscura
+        UITabBar.appearance().backgroundColor = UIColor(Color.valDark)
+        UITabBar.appearance().unselectedItemTintColor = UIColor.gray
+    }
+    
     var body: some View {
-        // RT-2: Navegación por Tabs
         TabView {
-            // Tab 1: Los Agentes
             AgentsListView()
-                .tabItem {
-                    Label("Agentes", systemImage: "person.3.fill")
-                }
+                .tabItem { Label("AGENTES", systemImage: "person.3.fill") }
+            
             MapsListView()
-                            .tabItem { Label("Mapas", systemImage: "map.fill") }
+                .tabItem { Label("MAPAS", systemImage: "map.fill") }
+            
             WeaponsListView()
-                            .tabItem { Label("Armas", systemImage: "scope") }
+                .tabItem { Label("ARSENAL", systemImage: "scope") }
+            
             ProfileView(viewModel: userViewModel)
-                .tabItem {
-                    Label("Perfil", systemImage: "gear")
-                }
+                .tabItem { Label("PERFIL", systemImage: "gear") }
         }
+        .tint(.valRed) // El icono seleccionado se pone rojo
+        .preferredColorScheme(.dark) // Fuerza modo oscuro en toda la app
     }
 }
 
