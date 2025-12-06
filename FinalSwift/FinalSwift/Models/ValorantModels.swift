@@ -7,55 +7,38 @@
 
 import Foundation
 
-// La respuesta "envoltura" que nos da la API
+// --- AGENTES ---
 struct AgentResponse: Codable {
     let status: Int
     let data: [Agent]
 }
 
-// El objeto principal: El Agente
 struct Agent: Codable, Identifiable {
     let uuid: String
     let displayName: String
     let description: String
-    let displayIcon: String?    // Icono pequeño
-    let fullPortrait: String?   // Foto completa del personaje
+    let displayIcon: String?
+    let fullPortrait: String?
     let role: Role?
-    
-    // 👇 ESTO ERA LO QUE FALTABA 👇
     let abilities: [Ability]?
     
-    // Identifiable requiere un 'id', usamos el uuid único de Valorant
     var id: String { uuid }
     
-    // Helpers para convertir String a URL de forma segura
-    var iconURL: URL? {
-        guard let displayIcon = displayIcon else { return nil }
-        return URL(string: displayIcon)
-    }
-    
-    var portraitURL: URL? {
-        guard let fullPortrait = fullPortrait else { return nil }
-        return URL(string: fullPortrait)
-    }
+    var iconURL: URL? { displayIcon != nil ? URL(string: displayIcon!) : nil }
+    var portraitURL: URL? { fullPortrait != nil ? URL(string: fullPortrait!) : nil }
 }
 
-// El Rol del agente (Duelista, Centinela, etc.)
 struct Role: Codable {
     let displayName: String
     let description: String?
 }
 
-// 👇 NUEVA ESTRUCTURA PARA LAS HABILIDADES 👇
 struct Ability: Codable, Hashable {
     let displayName: String
     let description: String
     let displayIcon: String?
     
-    var iconURL: URL? {
-        guard let displayIcon = displayIcon else { return nil }
-        return URL(string: displayIcon)
-    }
+    var iconURL: URL? { displayIcon != nil ? URL(string: displayIcon!) : nil }
 }
 
 struct MapResponse: Codable {
@@ -63,18 +46,21 @@ struct MapResponse: Codable {
     let data: [GameMap]
 }
 
-// El objeto Mapa (Ascent, Bind, etc.)
 struct GameMap: Codable, Identifiable {
     let uuid: String
     let displayName: String
-    let splash: String?       // Imagen grande de carga
-    let displayIcon: String?  // Imagen del minimapa vista aérea
+    let splash: String?
+    let displayIcon: String?
+    let coordinates: String?
+    let listViewIcon: String?
     
     var id: String { uuid }
     
-    // Helpers de URL
     var splashURL: URL? { splash != nil ? URL(string: splash!) : nil }
-    var iconURL: URL? { displayIcon != nil ? URL(string: displayIcon!) : nil }
+    
+    var tacticalMapURL: URL? { displayIcon != nil ? URL(string: displayIcon!) : nil }
+    
+    var listIconURL: URL? { listViewIcon != nil ? URL(string: listViewIcon!) : nil }
 }
 
 struct WeaponResponse: Codable {
@@ -82,7 +68,6 @@ struct WeaponResponse: Codable {
     let data: [Weapon]
 }
 
-// El objeto Arma
 struct Weapon: Codable, Identifiable {
     let uuid: String
     let displayName: String

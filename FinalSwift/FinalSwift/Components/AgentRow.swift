@@ -12,7 +12,6 @@ struct AgentRow: View {
     
     var body: some View {
         HStack(spacing: 15) {
-            // FOTO CON BORDE ROJO
             AsyncImage(url: agent.iconURL) { phase in
                 if let image = phase.image {
                     image.resizable().aspectRatio(contentMode: .fit)
@@ -21,40 +20,36 @@ struct AgentRow: View {
                 }
             }
             .frame(width: 50, height: 50)
-            .background(Color.valDark) // Fondo oscuro detrás de la foto
+            .background(Color.valDark)
             .clipShape(Circle())
-            .overlay(Circle().stroke(Color.valRed, lineWidth: 2)) // El borde rojo
+            .overlay(Circle().stroke(Color.valRed, lineWidth: 2))
             
-            // TEXTOS ESTILIZADOS
             VStack(alignment: .leading) {
-                Text(agent.displayName.uppercased()) // Nombre en mayúsculas
+                Text(agent.displayName.uppercased())
                     .font(.headline)
                     .bold()
                     .foregroundStyle(.white)
-                    .tracking(1) // Espaciado entre letras estilo militar
+                    .tracking(1)
                 
                 Text(agent.role?.displayName.uppercased() ?? "AGENTE")
                     .font(.caption)
                     .bold()
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
-                    .background(Color.valRed.opacity(0.8)) // Etiqueta roja de fondo
+                    .background(Color.valRed.opacity(0.8))
                     .foregroundColor(.white)
                     .cornerRadius(4)
             }
             
             Spacer()
             
-            // FLECHA A LA DERECHA
             Image(systemName: "chevron.right")
                 .foregroundStyle(.gray)
                 .opacity(0.5)
         }
         .padding()
-        // TARJETA DE FONDO
         .background(Color.white.opacity(0.05))
         .overlay(
-            // Pequeña línea roja decorativa a la izquierda
             Rectangle().frame(width: 4).foregroundColor(Color.valRed),
             alignment: .leading
         )
